@@ -1,0 +1,4 @@
+-r common.txt
+pylint==3.0.3
+pylint-django==2.5.5
+django-querycount==0.8.3
