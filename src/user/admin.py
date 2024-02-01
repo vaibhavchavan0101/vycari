@@ -15,8 +15,11 @@ class UserAdmin(BaseUserAdmin):
     ordering (tuple): Ordering of objects in the admin interface list view.
     registred UserAdmin on admin site. 
     """
+    def user_id(self, obj):  
+        return obj.id  
+    user_id.short_description = "Id"
     
-    list_display = ('username', 'email', 'phone', 'bio', 'country', 'gender')
+    list_display = ('user_id', 'username', 'email', 'phone', 'bio', 'country', 'gender')
     fieldsets = (
         ('User Info', {'fields': ('username', 'email', 'bio', 'phone', 'password',  'country', 'gender')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),

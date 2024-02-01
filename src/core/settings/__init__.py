@@ -15,7 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 try:
-    from .local import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
+    from .local import * #(DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 except ImportError:
     from .production import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'drf_yasg'
 ]
 
+
 MIDDLEWARE = ['querycount.middleware.QueryCountMiddleware'] if DEBUG else []
 MIDDLEWARE += [
     'django.middleware.security.SecurityMiddleware',
@@ -71,6 +72,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # OAuth
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
             'libraries': {  
                     'staticfiles': 'django.templatetags.static',
@@ -84,6 +88,25 @@ WSGI_APPLICATION = 'core.wsgi.APPLICATION'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'user.User'
+
+AUTHENTICATION_BACKENDS = [
+    'user.custom_backends.CustomBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'drf_social_oauth2.authentication.SocialAuthentication',
+    # drf-social-oauth2
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    # Google  OAuth2
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.google.GooglePlusAuth',
+    # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    #AppleID 
+    'social_core.backends.apple.AppleIdAuth',
+
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
