@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 try:
-    from .local import *#(DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
+    from .local import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 except ImportError:
     from .production import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'utils',
-    'user',
-    'drf_yasg',
+    'user'
 ]
+
 
 MIDDLEWARE = ['querycount.middleware.QueryCountMiddleware'] if DEBUG else []
 MIDDLEWARE += [
@@ -65,6 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -78,8 +80,16 @@ WSGI_APPLICATION = 'core.wsgi.APPLICATION'
 AUTH_USER_MODEL = 'user.User'
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
     'user.custom_backends.CustomBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'drf_social_oauth2.authentication.SocialAuthentication',
+    'drf_social_oauth2.backends.DjangoOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.apple.AppleIdAuth',
+
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -119,5 +129,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-PASSWORD_RESET_TIMEOUT = 600  # 600 (sec) / 60 = 10 minutes

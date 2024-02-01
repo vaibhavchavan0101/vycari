@@ -17,8 +17,7 @@ class CustomBackend(ModelBackend):
         try:
             user = User.objects.get(Q(email=username) | Q(phone=username) | Q(username=username))
         except User.DoesNotExist:
-            return Response({"message': 'User does not exist."}, status=status.HTTP_404_NOT_FOUND)
-
+            return None
         if password is None:
             return None
         if user and user.check_password(password):

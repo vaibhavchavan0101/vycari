@@ -3,7 +3,9 @@
 # local setup
 1. Create a virtual environment
 - `python -m venv venv`
-1. Activate it
+2. Activate it
 - `source venv/bin/activate`
-1. Install Requirements
+3. Install Requirements
 - `pip install -r requirements.txt`
+4. Install Requirements
+- `pip install -r requiremnets/local.txt` 

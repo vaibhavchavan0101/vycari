@@ -15,6 +15,11 @@ class UserAdmin(BaseUserAdmin):
         registred UserAdmin on admin site. 
     """
     list_display = ('username', 'email', 'phone', 'bio', 'country', 'gender')
+    def user_id(self, obj):  
+        return obj.id  
+    user_id.short_description = "Id"
+    
+    list_display = ('user_id', 'username', 'email', 'phone', 'bio', 'country', 'gender')
     fieldsets = (
         ('User Info', {'fields': ('username', 'email', 'bio', 'phone', 'password',  'country', 'gender')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
