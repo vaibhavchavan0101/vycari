@@ -14,7 +14,6 @@ class CustomBackend(ModelBackend):
             user = User.objects.get(Q(email=username) | Q(phone=username) | Q(username=username))
         except User.DoesNotExist:
             return None
-
         if password is None:
             return None
         if self.user_can_authenticate(user) and user.check_password(password) :

@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 class CustomUserManager(BaseUserManager):
     """Define a model manager for custom User model."""
 
-    def create_user(self, username, email, phone, password, **extra_fields):
+    def create_user(self, username, email, phone=None, password=None, **extra_fields):
         email = self.normalize_email(email)
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
