@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_swagger.views import get_swagger_view
+from . import settings
+from django.conf.urls.static import static
+
+schema_view = get_swagger_view(title='vycari API')
 
 urlpatterns = [  # pylint: disable=C0103
+    path('', schema_view),
     path('admin/', admin.site.urls),
+    path('auth/', include('social_django.urls', namespace='social')),
+    path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
 ]
