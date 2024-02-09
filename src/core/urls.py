@@ -16,15 +16,30 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_swagger.views import get_swagger_view
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
 from . import settings
 from django.conf.urls.static import static
+from drf_yasg import openapi
 
-schema_view = get_swagger_view(title='vycari API')
 
+# schema_view = get_swagger_view(title='vycari API')
+schema_view = get_schema_view(
+    openapi.Info(
+        title="vycari API",
+        default_version='v1',
+        description="vycari API",
+        terms_of_service="https://www.example.com/policies/terms/",
+        contact=openapi.Contact(email="contact@example.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    urlconf='social',
+    permission_classes=(permissions.AllowAny,),
+)
 urlpatterns = [  # pylint: disable=C0103
-    path('', schema_view),
     path('admin/', admin.site.urls),
     path('auth/', include('social_django.urls', namespace='social')),
-    path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
+    path('drf-auth/', include('drf_social_oauth2.urls', namespace='drf')),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
