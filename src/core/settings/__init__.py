@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'utils',
+    'user'
 ]
 
 MIDDLEWARE = ['querycount.middleware.QueryCountMiddleware'] if DEBUG else []
@@ -72,6 +73,12 @@ WSGI_APPLICATION = 'core.wsgi.APPLICATION'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'user.User'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'user.custom_backends.CustomBackend',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
