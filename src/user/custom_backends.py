@@ -1,21 +1,25 @@
 from django.contrib.auth.backends import ModelBackend
-from .models import User
 from django.db.models import Q
+from django.contrib.auth import get_user_model
+
+from rest_framework.response import Response
+from rest_framework import status
 
 class CustomBackend(ModelBackend):
     """
     Custom authentication backend for Django.
-    This backend allows authentication using email, password, or username. It extends Django's
+    This backend allows authentication using email, password, or username. It extends Django's 
     built-in ModelBackend for authentication purposes.
     """
 
     def authenticate(self, email=None, password=None, username=None, **kwargs):
+        User = get_user_model()
         try:
             user = User.objects.get(Q(email=username) | Q(phone=username) | Q(username=username))
         except User.DoesNotExist:
-            return None
+            return Response({"message': 'User does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
         if password is None:
             return None
-        if self.user_can_authenticate(user) and user.check_password(password) :
+        if user and user.check_password(password):
             return user

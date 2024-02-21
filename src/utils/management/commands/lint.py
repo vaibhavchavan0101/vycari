@@ -15,7 +15,7 @@ class Command(BaseCommand):
     def run_pylint(self, path):
 
         results = Run(['--load-plugins=pylint_django',
-                       '--rcfile=pylintrc', path], do_exit=False)
+                       '--rcfile=pylintrc', path])
         if results.linter.stats.error > ERROR_COUNT \
             or results.linter.stats.convention > CONVENTION_COUNT \
             or results.linter.stats.warning > WARNINGS:

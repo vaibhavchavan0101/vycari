@@ -12,3 +12,10 @@ DATABASES = {
         'PASSWORD': ''
     }
 }
+
+EMAIL_BACKEND = ''
+EMAIL_HOST = ''
+EMAIL_USE_TLS = True or False
+EMAIL_PORT = 1234
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''

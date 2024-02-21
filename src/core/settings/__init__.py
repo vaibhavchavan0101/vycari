@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 try:
-    from .local import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
+    from .local import *#(DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 except ImportError:
     from .production import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'utils',
     'user'
@@ -117,3 +118,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PASSWORD_RESET_TIMEOUT = 600  # 600 (sec) / 60 = 10 minutes
