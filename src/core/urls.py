@@ -19,4 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [  # pylint: disable=C0103
     path('admin/', admin.site.urls),
+    path('api/', include('user.urls')),
 ]
