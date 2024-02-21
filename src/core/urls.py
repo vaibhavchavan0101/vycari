@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from user.router import router
+
 urlpatterns = [  # pylint: disable=C0103
     path('admin/', admin.site.urls),
     path('api/', include('user.urls')),
+    path('api/', include(router.urls)),
 ]
