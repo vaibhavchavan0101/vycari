@@ -5,9 +5,6 @@ from user.views import RegisterUserView
 
 class NoDbTestRunner(TestCase, DiscoverRunner):
 	""" A test runner to test without database creation """
-	# def __init__(self, *args, **kwargs):
-	#     # Ensure the 'verbosity' argument is not passed to the parent class
-	#     super().__init__(*args, **kwargs)
 
 	def setUp(self):
 		self.factory = RequestFactory()
