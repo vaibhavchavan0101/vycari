@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework import status
 
+
 class CustomBackend(ModelBackend):
     """
     Custom authentication backend for Django.
@@ -15,7 +16,8 @@ class CustomBackend(ModelBackend):
     def authenticate(self, email=None, password=None, username=None, **kwargs):
         User = get_user_model()
         try:
-            user = User.objects.get(Q(email=username) | Q(phone=username) | Q(username=username))
+            user = User.objects.get(Q(email=username) | Q(
+                phone=username) | Q(username=username))
         except User.DoesNotExist:
             return Response({"message': 'User does not exist."}, status=status.HTTP_404_NOT_FOUND)
 

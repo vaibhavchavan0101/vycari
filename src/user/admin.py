@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from .models import User, Categories, UserCategories
 
+
 class UserAdmin(BaseUserAdmin):
     """
     Admin configuration for managing UserAdmin instances.
@@ -16,12 +17,15 @@ class UserAdmin(BaseUserAdmin):
     """
     list_display = ('username', 'email', 'phone', 'bio', 'country', 'gender')
     fieldsets = (
-        ('User Info', {'fields': ('username', 'email', 'bio', 'phone', 'password',  'country', 'gender')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
+        ('User Info', {'fields': ('username', 'email',
+         'bio', 'phone', 'password',  'country', 'gender')}),
+        ('Permissions', {'fields': ('is_active',
+         'is_staff', 'is_superuser', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     search_fields = ('username', 'phone')
     ordering = ('username',)
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Categories)

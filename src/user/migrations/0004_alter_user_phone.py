@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='phone',
-            field=models.CharField(max_length=10, unique=True, validators=[django.core.validators.MaxLengthValidator(10, message='Phone number must be 10 characters long.'), django.core.validators.MinLengthValidator(10, message='Phone number must be 10 characters long.'), django.core.validators.RegexValidator(message='Phone number must contain only numeric number.', regex='^[7-9][0-9]{9}$')]),
+            field=models.CharField(max_length=10, unique=True, validators=[django.core.validators.MaxLengthValidator(10, message='Phone number must be 10 characters long.'), django.core.validators.MinLengthValidator(
+                10, message='Phone number must be 10 characters long.'), django.core.validators.RegexValidator(message='Phone number must contain only numeric number.', regex='^[7-9][0-9]{9}$')]),
         ),
     ]
