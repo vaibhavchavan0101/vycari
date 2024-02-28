@@ -1,21 +1,23 @@
 import os
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, viewsets
-from rest_framework.authtoken.models import Token
-
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, get_user_model
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status, viewsets
+from rest_framework.authtoken.models import Token
+
 from .serializers import LoginSerializer, UserSerializer, ForgotPasswordSerializer
+from .swagger_decorators import login_schema, register_schema, forgot_password_schema
 
 User = get_user_model()
 
 class LoginView(APIView):
+    @login_schema
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -26,6 +28,7 @@ class LoginView(APIView):
 
 class RegisterUserView(viewsets.ViewSet):
     serializer_class = UserSerializer
+    @register_schema
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
@@ -34,6 +37,7 @@ class RegisterUserView(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ForgotPasswordView(APIView):
+    @forgot_password_schema
     def post(self, request):
         serializer = ForgotPasswordSerializer(data=request.data)
         if serializer.is_valid():

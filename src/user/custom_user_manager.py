@@ -5,6 +5,12 @@ class CustomUserManager(BaseUserManager):
     """Define a model manager for custom User model."""
 
     def create_user(self, username, email, phone, password, **extra_fields):
+        if not username:
+            raise ValueError("username is required")
+        if not email:
+            raise ValueError("email is required")
+        if not phone:
+            raise ValueError("phone is required")
         email = self.normalize_email(email)
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)

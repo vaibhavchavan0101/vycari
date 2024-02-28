@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.response import Response
-from rest_framework import status
 
 from .models import User
 
