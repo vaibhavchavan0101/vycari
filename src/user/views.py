@@ -90,6 +90,6 @@ def send_email_notification_for_git_push():
     subject = f'Git Push - by {user} for branch "{branch_name}" '
     message = f'Git push details:\n{commit_details}\n\nBranch name: {branch_name}\nEmail: {email}\nUser: {user}'
     from_email = settings.EMAIL_HOST_USER
-    recipient_list = ['apurvnagrale@gmail.com']
+    recipient_list = ['xyz@sample.com']    # add recipient email id here.
     send_mail(subject, message, from_email, recipient_list)
     return
