@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'utils',
-    'user'
+    'user',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = ['querycount.middleware.QueryCountMiddleware'] if DEBUG else []
