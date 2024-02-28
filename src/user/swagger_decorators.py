@@ -15,7 +15,8 @@ login_schema = swagger_auto_schema(
 register_schema = swagger_auto_schema(
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        required=['username', 'email', 'password', 'phone', 'bio', 'country', 'gender'],
+        required=['username', 'email', 'password',
+                  'phone', 'bio', 'country', 'gender'],
         properties={
             'username': openapi.Schema(type=openapi.TYPE_STRING),
             'email': openapi.Schema(type=openapi.TYPE_STRING, format=openapi.FORMAT_EMAIL),

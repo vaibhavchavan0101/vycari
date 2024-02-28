@@ -19,6 +19,7 @@ from .swagger_decorators import login_schema, register_schema, forgot_password_s
 
 User = get_user_model()
 
+
 class LoginView(APIView):
     @login_schema
     def post(self, request):
@@ -29,8 +30,10 @@ class LoginView(APIView):
             return Response({'token': token.key}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RegisterUserView(viewsets.ViewSet):
     serializer_class = UserSerializer
+
     @register_schema
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -38,6 +41,7 @@ class RegisterUserView(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ForgotPasswordView(APIView):
     @forgot_password_schema

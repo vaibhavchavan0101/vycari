@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 try:
-    from .local import *#(DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
+    from .local import *  # (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 except ImportError:
     from .production import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 BASE_DIR = Path(__file__).resolve().parent.parent
