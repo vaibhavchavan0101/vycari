@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "pre-commit running......."
+
+# Change directory to the project's root directory
+cd "$(git rev-parse --show-toplevel)" || exit
+
+# Run AutoPEP8 to automatically format Python code
+# install autopep8 first --> ( pip install autopep8 )
+autopep8 --in-place --recursive .
+
+# Run PEP8 checks using flake8
+flake8
+
+# Run Pylint to check for code quality
+# Install pylint first --> ( pip install pylint )
+pylint src
+
+# Run Django tests
+python src/manage.py test user.tests

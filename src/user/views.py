@@ -1,10 +1,13 @@
 import os
+import subprocess
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, get_user_model
+from django.core.mail import send_mail
+from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -67,3 +70,22 @@ class ForgotPasswordView(APIView):
                 return Response({'message': 'SMTP Authentication is required'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response({'message': 'Password reset link has been sent to your email.'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def send_email_notification_for_git_push():
+    """ Send email notification for each git push using Git's pre-push hooks. """
+
+    branch_name = subprocess.check_output(
+        ['git', 'rev-parse', '--abbrev-ref', 'HEAD']).decode('utf-8').strip()
+    commit_details = subprocess.check_output(
+        ['git', 'log', '-1']).decode('utf-8').strip()
+    email = subprocess.check_output(
+        ['git', 'config', 'user.email']).decode('utf-8').strip()
+    user = subprocess.check_output(
+        ['git', 'config', 'user.name']).decode('utf-8').strip()
+    subject = f'Git Push - by {user} for branch "{branch_name}" '
+    message = f'Git push details:\n{commit_details}\n\nBranch name: {branch_name}\nEmail: {email}\nUser: {user}'
+    from_email = settings.EMAIL_HOST_USER
+    recipient_list = ['apurvnagrale@gmail.com']
+    send_mail(subject, message, from_email, recipient_list)
+    return
