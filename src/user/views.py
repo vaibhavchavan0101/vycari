@@ -1,69 +1,49 @@
-import os
+from django.views.decorators.cache import never_cache
+from social_core.actions import do_auth, do_complete
+from social_django.views import _do_login
+from django.views.decorators.csrf import csrf_exempt
+from social_django.utils import psa, maybe_require_post
+from rest_framework.decorators import api_view
+from social_django.utils import load_strategy
+from social_django.strategy import DjangoStrategy
+from social_core.backends.google import GoogleOAuth2, BaseGoogleAuth, BaseGoogleOAuth2API
+from social_core.backends.twitter import TwitterOAuth
+from drf_social_oauth2.authentication import SocialAuthentication
+from social_core.pipeline import user, social_auth       
+from django.http import HttpResponseRedirect, HttpRequest
+from django.contrib.auth import REDIRECT_FIELD_NAME
+import requests
+import json
+NAMESPACE = "social"
 
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from django.core.mail import send_mail
-from django.contrib.auth import authenticate, get_user_model
+# @api_view(['GET'])
+@never_cache
+@maybe_require_post
+@psa(f"{NAMESPACE}:complete")
+def auth(request, backend):
+    print('backend 1:--->', backend)
+    ss= do_auth(request.backend, redirect_name=REDIRECT_FIELD_NAME)
+    print('ss:--->', ss)
+    return ss
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, viewsets
-from rest_framework.authtoken.models import Token
-
-from .serializers import LoginSerializer, UserSerializer, ForgotPasswordSerializer
-from .swagger_decorators import login_schema, register_schema, forgot_password_schema
-
-User = get_user_model()
-
-class LoginView(APIView):
-    @login_schema
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data['user']
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class RegisterUserView(viewsets.ViewSet):
-    serializer_class = UserSerializer
-    @register_schema
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class ForgotPasswordView(APIView):
-    @forgot_password_schema
-    def post(self, request):
-        serializer = ForgotPasswordSerializer(data=request.data)
-        if serializer.is_valid():
-            email = serializer.validated_data['email']
-            try:
-                user = User.objects.get(email=email)
-            except User.DoesNotExist:
-                return Response({'message': 'User does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Generate password reset token
-            token_generator = PasswordResetTokenGenerator()
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            token = token_generator.make_token(user)
-
-            BASE_URL = request.build_absolute_uri('/')[:-1]
-            reset_link = f"{BASE_URL}/api/reset-password/confirm/{uid}/{token}"
-            try:
-                # Send password reset email
-                send_mail(
-                    'Reset Your Password',
-                    f'Click the link to reset your password: {reset_link}',
-                    os.environ.get('EMAIL_HOST_USER'),
-                    [email],
-                    fail_silently=False,
-                )
-            except:
-                return Response({'message': 'SMTP Authentication is required'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            return Response({'message': 'Password reset link has been sent to your email.'}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+@never_cache
+@csrf_exempt   
+@psa(f"{NAMESPACE}:complete")
+def get_token(request, backend, *args, **kwargs):
+    """Authentication complete view"""
+    print('access_token=====:--->', request)
+    print('access_token=====:--->', request.backend)
+    ss= do_complete(
+        request.backend,
+        _do_login,
+        user=request.user,
+        redirect_name=REDIRECT_FIELD_NAME,
+        request=request,
+        *args,
+        **kwargs,
+    )
+    print('sss:--->', ss)
+    return ss
+    
+def dashboard(request, backend):
+    return HttpRequest("Welcome to the dashboard")
