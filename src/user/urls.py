@@ -5,7 +5,6 @@ from rest_framework import routers
 
 from .views import LoginView, RegisterUserView, ForgotPasswordView
 
-
 router = routers.DefaultRouter()
 
 router.register(r'register', RegisterUserView, basename='register')
