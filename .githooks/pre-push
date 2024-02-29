@@ -8,10 +8,10 @@ python src/manage.py test core.integration_tests
 
 
 # Send the email for Git Push Notification
-PYTHON_EXECUTABLE="../../venv/bin/python"
-MANAGE_PY_PATH="src/manage.py"
-if $PYTHON_EXECUTABLE $MANAGE_PY_PATH shell -c "from user.views import send_email_notification_for_git_push; send_email_notification_for_git_push()"; then
-    echo "Email sent successfully"
-else
-    echo "Error: Failed to send email"
-fi
+# PYTHON_EXECUTABLE="../../venv/bin/python"
+# MANAGE_PY_PATH="src/manage.py"
+# if $PYTHON_EXECUTABLE $MANAGE_PY_PATH shell -c "from user.views import send_email_notification_for_git_push; send_email_notification_for_git_push()"; then
+#     echo "Email sent successfully"
+# else
+#     echo "Error: Failed to send email"
+# fi
