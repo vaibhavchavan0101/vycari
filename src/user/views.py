@@ -31,7 +31,6 @@ def auth(request, backend):
 @psa(f"{NAMESPACE}:complete")
 def get_token(request, backend, *args, **kwargs):
     """Authentication complete view"""
-    print('access_token=====:--->', request)
     print('access_token=====:--->', request.backend)
     ss= do_complete(
         request.backend,
