@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 try:
-    from .local import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
+    from .local import * #(DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 except ImportError:
     from .production import (DEBUG, SECRET_KEY, DATABASES, ALLOWED_HOSTS)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'utils',
-    'user'
+    'user',
+    'drf_yasg',
+    'oauth2_provider',
+    'social_django',
+    'drf_social_oauth2',
 ]
 
 
@@ -89,6 +93,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.twitter_oauth2.TwitterOAuth2',
+    'social_core.backends.apple.AppleIdAuth',
+
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -129,23 +135,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+PASSWORD_RESET_TIMEOUT = 600  # 600 (sec) / 60 = 10 minutes
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'drf_social_oauth2.authentication.SocialAuthentication',
     ),
 }
-
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.social_auth.associate_by_email',
-    'user.custom_pipeline.custom_user_details',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-)
-SOCIAL_AUTH_FACEBOOK_API_VERSION = 19.0

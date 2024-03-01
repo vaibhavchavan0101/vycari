@@ -16,7 +16,6 @@ import requests
 import json
 NAMESPACE = "social"
 
-# @api_view(['GET'])
 @never_cache
 @maybe_require_post
 @psa(f"{NAMESPACE}:complete")

@@ -38,7 +38,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [  # pylint: disable=C0103
     path('admin/', admin.site.urls),
-    path('api/', include('user.urls')),
+    path('', include('user.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('auth/', include('drf_social_oauth2.urls', namespace='drf')),
     # path('auth/', include('social_django.urls', namespace='social')),
